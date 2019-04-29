@@ -1,0 +1,12 @@
+{
+	"disableAutoUpdate": false,
+	"name": "bam-hp-bar",
+	"author": "Lambda11",
+	"description": "Shows hidden HP-Bar for field boss BAMs: Ortan, Cerrus, Hazard",
+	"options": {
+		"niceName": "BAM-HP-Bar",
+		"guiName": "BAM-HP-Bar"
+	},
+	"servers": ["https://raw.githubusercontent.com/Lambda11/bam-hp-bar/master/"],
+	"supportUrl": "https://github.com/Lambda11/bam-hp-bar/issues"
+}
