@@ -44,6 +44,7 @@ module.exports = function bam_hp_bar(mod) {
 					gage_info.huntingZoneId = event.huntingZoneId;
 					gage_info.templateId = event.templateId;
 					gage_info.curHp = gage_info.maxHp;
+					console.log("BAM " + event.templateId + " FOUND, and his name is: " + event.npcName + ", id: " + String(event.gameId));
 					correct_hp(event.hpLevel);
 					load();
 					if(event.mode)
@@ -90,6 +91,7 @@ function load()
 		hook('S_DESPAWN_NPC', 3, (event) => {
 			if (event.gameId === gage_info.id)
 			{
+				console.log("BAM " + gage_info.templateId + " Despawned " + event.type + ", ID: " + String(event.gameId));
 				unload();
 			}
 		});
