@@ -71,7 +71,7 @@ function load(e)
 	correct_hp(e.hpLevel);
 	if(e.mode)
 	{
-		command.message('You missed ~ <font color="#E69F00">' + Math.round((99999999 - event.remainingEnrageTime)/1000) + '</font> sec. of the fight');
+		command.message('You missed ~ <font color="#E69F00">' + Math.round((99999999 - e.remainingEnrageTime)/1000) + '</font> sec. of the fight');
 	}
 	if(e.hpLevel == 5)
 	{
