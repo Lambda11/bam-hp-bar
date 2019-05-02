@@ -2,7 +2,7 @@ module.exports = function bam_hp_bar(mod) {
 	
 	const command = mod.command;
 	
-	var enabled = true,
+	var	enabled = true,
 		hooks = [],
 		gage_info ={id: 0n,
 					huntingZoneId: 0,
@@ -33,33 +33,28 @@ module.exports = function bam_hp_bar(mod) {
 	}
 	
 	mod.hook('S_SPAWN_NPC', 11, (event) => {
+		if (!enabled || event.walkSpeed != 240) return;
+		
 		switch (event.templateId)
 		{
 			case 5001: // Ortan
+				event.shapeId = 303730;
+				event.templateId = 7000;
+				event.huntingZoneId = 434;
+				load(event);
+				return true;
 			case 4001: // Cerrus
+				event.shapeId = 303750;
+				event.templateId = 1000;
+				event.huntingZoneId = 994;
+				load(event);
+				return true;
 			case 501:  // Hazard
-				if(enabled && event.walkSpeed == 240)
-				{
-					gage_info.id = event.gameId;
-					gage_info.huntingZoneId = event.huntingZoneId;
-					gage_info.templateId = event.templateId;
-					gage_info.curHp = gage_info.maxHp;
-					console.log("BAM " + event.templateId + " FOUND, and his name is: " + event.npcName + ", id: " + String(event.gameId));
-					correct_hp(event.hpLevel);
-					load();
-					if(event.mode)
-					{
-						command.message('You missed ~ <font color="#E69F00">' + Math.round((99999999 - event.remainingEnrageTime)/1000) + '</font> sec. of the fight');
-					}
-					else if(event.hpLevel == 5)
-					{
-						command.message("BAM is at full 100% hp, nobody touched it");
-					}
-					else if(event.hpLevel == 0)
-					{
-						command.message("BAM is likely far below 20% hp, it may die any moment now");
-					}
-				}
+				event.shapeId = 303740;
+				event.templateId = 77730;
+				event.huntingZoneId = 777;
+				load(event);
+				return true;
 		}
 	});
 
@@ -68,8 +63,24 @@ module.exports = function bam_hp_bar(mod) {
 		command.message((enabled ? '<font color="#56B4E9">enabled</font>' : '<font color="#E69F00">disabled</font>'));
 	})
 
-function load()
+function load(e)
 {
+	//console.log("BAM " + event.templateId + " FOUND, and his name is: " + event.npcName + ", id: " + String(event.gameId));
+	gage_info.id = e.gameId;
+	gage_info.curHp = gage_info.maxHp;
+	correct_hp(e.hpLevel);
+	if(e.mode)
+	{
+		command.message('You missed ~ <font color="#E69F00">' + Math.round((99999999 - event.remainingEnrageTime)/1000) + '</font> sec. of the fight');
+	}
+	if(e.hpLevel == 5)
+	{
+		command.message("BAM is at full 100% hp, nobody touched it");
+	}
+	else if(e.hpLevel == 0)
+	{
+		command.message("BAM is likely far below 20% hp, it may die any moment now");
+	}
 	if(!hooks.length)
 	{
 		setTimeout(update_hp, 1000);
@@ -91,7 +102,7 @@ function load()
 		hook('S_DESPAWN_NPC', 3, (event) => {
 			if (event.gameId === gage_info.id)
 			{
-				console.log("BAM " + gage_info.templateId + " Despawned " + event.type + ", ID: " + String(event.gameId));
+				//console.log("BAM " + gage_info.templateId + " Despawned " + event.type + ", ID: " + String(event.gameId));
 				unload();
 			}
 		});
